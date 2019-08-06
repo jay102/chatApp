@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 // Option 1: Passing parameters separately
 
-const db = new Sequelize('fiverchattapp', 'postgres', '123ifeco', {
+const db = new Sequelize('fiverrchatapp', 'postgres', '123ifeco', {
     host: 'localhost',
     dialect: 'postgres',
 

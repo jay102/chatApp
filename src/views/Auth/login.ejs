@@ -1,8 +1,9 @@
 <html>
 <head>
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/bootstrap.min.css" >
 <link rel="stylesheet" href="/css/auth_styles.css">
-
+<title>Login</title>
 </head>
 
 <body>
@@ -12,9 +13,13 @@
             <h1 id="sign_in_label" class="text-center login-title">Sign in to continue</h1>
             <div class="account-wall">
                 <img class="profile-img" src="/imgs/placeholder.jpg"alt="">
-                <form class="form-signin">
-                <input type="text" class="form-control" placeholder="Email" required autofocus>
-                <input type="password" class="form-control" placeholder="Password" required>
+                <form class="form-signin" action="/auth/login" method="POST">
+                 <% if(error.length>0){ %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"><%= error%></div>
+
+          <% }%>
+                <input type="text" class="form-control" placeholder="Email" required autofocus name="email">
+                <input type="password" class="form-control" placeholder="Password" required name="password">
                 <button id="sign_in" class="btn btn-lg btn-block" type="submit">
                     Sign in</button>
                 <label class="checkbox pull-left">

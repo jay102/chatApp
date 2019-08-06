@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const db = require('../config');
-const Messages = require('./Messages');
 
 const Users = db.define('user', {
     first_name: {
@@ -21,16 +20,11 @@ const Users = db.define('user', {
     },
     image_url: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     username: {
         type: Sequelize.STRING,
         allowNull: false
     },
-});
-
-Messages.belongsTo(User, {
-    foreignKey: "user_id",
-    targetKey: "user_id"
 });
 module.exports = Users;

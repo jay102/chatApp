@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../config');
+const User = require('./Users');
 
 const Messages = db.define('message', {
     title: {
@@ -14,6 +15,10 @@ const Messages = db.define('message', {
         type: Sequelize.STRING,
         allowNull: false
     },
+});
+Messages.belongsTo(User, {
+    foreignKey: "user_id",
+    targetKey: "user_id"
 });
 
 module.exports = Messages;
