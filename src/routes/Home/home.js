@@ -12,7 +12,6 @@ function homeRouter() {
         } else {
             res.redirect('/auth/login')
         }
-
     })
     router.route('/')
         .get(getAllUsers);

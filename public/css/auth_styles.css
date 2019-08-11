@@ -1,5 +1,5 @@
 .body{
-    font-family: "proxima-nova", "Source Sans Pro", sans-serif;
+    font-family: sans-serif;
 }
 
 
@@ -84,7 +84,6 @@
 #sign_in{
     background-color: #2c3e50;
     color:#ffffff;
-    margin:10px;
 }
 #sign_up{
     color:#2c3e50;

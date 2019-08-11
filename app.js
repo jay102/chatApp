@@ -9,6 +9,10 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const db = require('./database/config');
+const app = express();
+const server = require('http').Server(app);
+const io = module.exports.io = require('socket.io')(server);
+const socketManager = require('./src/sockets/socketManager');
 
 //import routes
 const Auth = require('./src/routes/Auth/auth');
@@ -17,7 +21,7 @@ const Home = require('./src/routes/Home/home')();
 //declare port
 const port = process.env.PORT || 5000;
 
-const app = express();
+
 
 //test db
 db.authenticate()
@@ -25,7 +29,7 @@ db.authenticate()
     .catch(err => debug("Error :" + err));
 
 //Middlewares
-app.use(morgan('tiny'));
+//app.use(morgan('tiny'));
 
 //body parser
 app.use(bodyParser.json());
@@ -35,6 +39,8 @@ app.use(cookieParser());
 //Express Sessions
 app.use(session({
     secret: 'secret',
+    maxAge: new Date(Date.now() + 3600000), //1 Hour
+    expires: new Date(Date.now() + 3600000), //1 Hour
     saveUninitialized: true,
     resave: true
 }));
@@ -70,22 +76,30 @@ app.get('/', (req, res) => {
     res.redirect('/auth/login')
 });
 
-//setup error handler
-// app.use((req, res, next) => {
-//     const error = new Error("Not Found");
-//     error.status = 404;
-//     next(error);
-// });
+app.get('/logout', function (req, res) {
+    req.logOut();
+    req.session.destroy(function (err) {
+        res.redirect('/auth/login'); //Inside a callback… bulletproof!
+    });
+});
 
-// app.use((error, req, res, next) => {
-//     res.status(error.status || 500);
-//     res.json({
-//         error: {
-//             message: error.message
-//         }
-//     });
-// });
+// setup error handler
+app.use((req, res, next) => {
+    const error = new Error("Not Found");
+    error.status = 404;
+    next(error);
+});
 
-app.listen(port, () => {
+app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    res.json({
+        error: {
+            message: error.message
+        }
+    });
+});
+io.on("connection", socketManager);
+
+server.listen(port, () => {
     debug(`Server running on port ${chalk(`${port}`)}`);
 })

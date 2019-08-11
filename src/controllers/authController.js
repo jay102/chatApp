@@ -1,6 +1,6 @@
 const Users = require('../../database/models/Users');
 const responseHandler = require('../responseHandler/response');
-const debug = require('debug')('authController')
+const debug = require('debug')('app:authController')
 const bcrypt = require("bcryptjs");
 const salt = bcrypt.genSaltSync(10);
 

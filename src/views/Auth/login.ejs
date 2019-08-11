@@ -2,44 +2,33 @@
 <head>
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/bootstrap.min.css" >
-<link rel="stylesheet" href="/css/auth_styles.css">
+<link href="/css/signin.css" rel="stylesheet">
 <title>Login</title>
 </head>
 
 <body>
-<div class="container">
-    <div class="row">
-        <div id="auth_row" class="col-sm-6 col-md-4 col-md-offset-4">
-            <h1 id="sign_in_label" class="text-center login-title">Sign in to continue</h1>
-            <div class="account-wall">
-                <img class="profile-img" src="/imgs/placeholder.jpg"alt="">
-                <form class="form-signin" action="/auth/login" method="POST">
-                 <% if(error.length>0){ %>
+<form class="form-signin" action="/auth/login" method="POST">
+    <% if(error.length>0){ %>
             <div class="alert alert-danger alert-dismissible fade show" role="alert"><%= error%></div>
 
           <% }%>
-                <input type="text" class="form-control" placeholder="Email" required autofocus name="email">
-                <input type="password" class="form-control" placeholder="Password" required name="password">
-                <button id="sign_in" class="btn btn-lg btn-block" type="submit">
-                    Sign in</button>
-                <label class="checkbox pull-left">
-                    <input type="checkbox" value="remember-me">
-                    Remember me?
-                </label>
-                </form>
-            </div>
-            <a href="/auth/register" id="sign_up" class="text-center new-account">Signup </a>
-        </div>
-    </div>
-</div>
-
-
+                <h1 id="signin" class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus name="email">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required name="password">
+                <div class="checkbox mb-3">
+                 <a style="float:right" href="/auth/register" id="sign_up" class="text-center new-account">Signup </a>
+                  <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                  </label>
+                </div>
+                <button id="sign_in" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <p id="copyright" class="mt-5 mb-3 text-muted">&copy;James 2019</p>
+              </form>
 
 
 <script src="/js/bootstrap.min.js" ></script>
 <script src="/js/jquery.slim.min.js"></script>
 </body>
-
-
-
 </html>
