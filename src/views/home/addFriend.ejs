@@ -12,15 +12,7 @@
       <%# <div class="loader"></div> %>
         <div class="wrapper">
 		<ul id="contact_list"class="list-group">
-			<% for(let i=0; i < contacts.length; i++) { %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-            <p class="id" style="display:none"><%=contacts[i].id%></p>
-			<img src="<%=`profile_imgs/${contacts[i].image_url}`%>" class="rounded-circle" height="40px" width="40px">
-			<span class="name" style="margin-right:10px; margin-left:10px"> <%=`${contacts[i].first_name}  ${contacts[i].last_name}`%></span>
-				<a class="add_friends" href=""><i style="color:#007bff" class="fa fa-user-plus fa-fw" aria-hidden="true"></i></a>
-			</li>
-
-			<% } %>
+		
 		</ul>
 		</div>
       </div>

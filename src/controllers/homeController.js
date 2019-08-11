@@ -20,7 +20,7 @@ function homeController() {
                         }
                     }
                 }).map(el => el.get({ plain: true }))
-                socket.emit('contacts', { contacts: allusers });
+                socket.emit('contacts', { allusers });
             } catch (err) {
                 console.log(err)
             }

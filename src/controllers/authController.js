@@ -21,30 +21,35 @@ function authController() {
         const username = req.body.username;
         const password = req.body.password;
         const image = req.file.filename;
+        console.log(req.file)
 
-        //hash password using bcyrpt
+        if (req.file) {
+            //hash password using bcyrpt
 
-        let hash = bcrypt.hashSync(password, salt);
-        Users.findOrCreate({
-            where: { email: email },
-            defaults: {
-                first_name: first_name,
-                last_name: last_name,
-                email: email,
-                image_url: image,
-                username: username,
-                password: hash,
-            }
-        })
-            .then(([users, created]) => {
-                if (created) {
-                    const user = users.get({ plain: true })
-                    req.session.user_id = user.id;
-                    success('/auth/login', "success")
-                } else {
-                    error("Email or username already in use", 'Auth/signup');
+            let hash = bcrypt.hashSync(password, salt);
+            Users.findOrCreate({
+                where: { email: email },
+                defaults: {
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    image_url: image,
+                    username: username,
+                    password: hash,
                 }
-            }).catch(err => error(err));
+            })
+                .then(([users, created]) => {
+                    if (created) {
+                        const user = users.get({ plain: true })
+                        req.session.user_id = user.id;
+                        success('/auth/login', "success")
+                    } else {
+                        error("Email or username already in use", 'Auth/signup');
+                    }
+                }).catch(err => error(err));
+        } else {
+            alert('please select an image')
+        }
     }
 
     return {

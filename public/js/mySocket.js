@@ -79,39 +79,48 @@ socket.on('messages_received', function (data) {
 
 socket.on('contacts', (data) => {
     console.log(data);
-    const ul = document.getElementsByClassName('list-group');
-    // for (let i = 0; i < data.contacts.length; i++) {
-    //     const li = document.createElement('li');
-    //     const p = document.createElement('p');
-    //     const img = document.createElement('img');
-    //     const span = document.createElement('span');
-    //     const a = document.createElement('a');
-    //     const i = document.createElement('i');
-    //     li.setAttribute('class', 'list-group-item d-flex justify-content-between align-items-center');
-    //     p.setAttribute('class', 'id');
-    //     p.style.display = "none";
-    //     p.value = data.contacts[i]['id']
-    //     img.src = `profile_imgs/${data.contacts[i].image_url}`;
-    //     img.setAttribute('class', 'rounded-circle');
-    //     img.height = "40px";
-    //     img.width = "40px";
-    //     span.setAttribute('class', 'name');
-    //     span.style.marginLeft = "10px";
-    //     span.style.marginRight = "10px";
-    //     span.textContent = `${data.contacts[i].first_name} ${data.contacts[i].last_name}`;
-    //     a.setAttribute('class', 'add_friends');
-    //     a.href = "";
-    //     i.style.color = "#007bff";
-    //     i.setAttribute('class', 'fa fa-user-plus fa-fw');
-    //     i.setAttribute('aria-hidden', true);
-    //     a.appendChild(i);
-    //     li.appendChild(p);
-    //     li.appendChild(img);
-    //     li.appendChild(span)
-    //     li.appendChild(a)
-    //     ul.appendChild(li)
-    //     console.log(ul)
-    //     console.log(data.contacts[i].id + data.contacts[i].last_name);
-    // }
+    const ul = document.getElementById('contact_list');
+    ul.innerHTML = "";
+    data.allusers.forEach(user => {
+        const li = document.createElement('li');
+        const p = document.createElement('p');
+        const img = document.createElement('img');
+        const span = document.createElement('span');
+        const a = document.createElement('a');
+        const i = document.createElement('i');
+        li.setAttribute('class', 'list-group-item d-flex justify-content-between align-items-center');
+        p.setAttribute('class', 'id');
+        p.style.display = "none";
+        p.textContent = `${user.id}`;
+        img.src = `profile_imgs/${user.image_url}`;
+        img.height = "40";
+        img.width = "40";
+        img.setAttribute('class', 'rounded-circle');
+        span.setAttribute('class', 'name');
+        span.style.marginLeft = "10px";
+        span.style.marginRight = "10px";
+        span.textContent = `${user.first_name} ${user.last_name}`;
+        a.setAttribute('class', 'add_friends');
+        a.href = "";
+        i.style.color = "#007bff";
+        i.setAttribute('class', 'fa fa-user-plus fa-fw');
+        i.setAttribute('aria-hidden', true);
+        a.innerHTML += i.outerHTML;
+        li.innerHTML += p.outerHTML + img.outerHTML + span.outerHTML + a.outerHTML;
+        ul.appendChild(li)
+    });
 
+    $(".add_friends").click(function (e) {
+        e.preventDefault()
+        const receiver_id = $(this).closest('.list-group-item').find(".id").text();
+        const name = $(this).closest('.list-group-item').find('.name').text();
+        const qst = confirm(`send request to ${name}?`);
+        if (qst) {
+            //make request
+            socket.emit('onRequest', { name: firstname + " " + lastname, id: receiver_id, user_id: user_id, is_friend: 0 });
+
+        } else {
+            return null;
+        }
+    });
 });
