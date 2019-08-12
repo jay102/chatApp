@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha",
-    "start": "set DEBUG=app,authController,homeController* & nodemon app.js",
+    "start": "set DEBUG=app,authController,homeController* & node app.js",
+    "dev": "set DEBUG=app,authController,homeController* & node app.js",
     "lint": "eslint app.js"
   },
   "author": "WebdesignWorkz",
