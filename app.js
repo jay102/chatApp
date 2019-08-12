@@ -14,22 +14,22 @@ const server = require('http').Server(app);
 const io = module.exports.io = require('socket.io')(server);
 const socketManager = require('./src/sockets/socketManager');
 
-//import routes
-const Auth = require('./src/routes/Auth/auth');
-const Home = require('./src/routes/Home/home')();
-
 //declare port
 const port = process.env.PORT || 5000;
-
-
 
 //test db
 db.authenticate()
     .then(() => debug("Database Connected Successfully"))
     .catch(err => debug("Error :" + err));
 
+
+//import routes
+const Auth = require('./src/routes/Auth/auth');
+const Home = require('./src/routes/Home/home')();
+
+
 //Middlewares
-//app.use(morgan('tiny'));
+app.use(morgan('tiny'));
 
 //body parser
 app.use(bodyParser.json());

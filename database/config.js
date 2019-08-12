@@ -1,17 +1,34 @@
 const Sequelize = require('sequelize');
+let db;
+require('dotenv').config();
 // Option 1: Passing parameters separately
+console.log("env is", process.env.NODE_ENV);
 
-const db = new Sequelize('fiverrchatapp', 'postgres', '123ifeco', {
-    host: 'localhost',
-    dialect: 'postgres',
+if (process.env.NODE_ENV !== "development") {
+    db = new Sequelize(`${process.env.DATABASE_URL}`, {
+        dialect: 'postgres',
 
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
+        pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+        }
     }
+    );
+} else {
+    db = new Sequelize('fiverrchatapp', 'postgres', '123ifeco', {
+        host: 'localhost',
+        dialect: 'postgres',
+
+        pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+        }
+    });
 }
-);
+
 
 module.exports = db;
