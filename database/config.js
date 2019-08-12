@@ -3,7 +3,7 @@ let db;
 require('dotenv').config();
 // Option 1: Passing parameters separately
 console.log("env is", process.env.NODE_ENV);
-
+console.log(process.env.DATABASE_URL)
 if (process.env.NODE_ENV !== "development") {
     db = new Sequelize(`${process.env.DATABASE_URL}`, {
         dialect: 'postgres',
