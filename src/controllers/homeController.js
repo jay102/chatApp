@@ -10,6 +10,18 @@ const Op = Sequelize.Op;
 
 function homeController() {
 
+    function getNotifications(io, data) {
+        (async function () {
+            try {
+                const count = await Notifications.count({ where: { to: data } });
+                const userRequests = await Notifications.findAll({ where: { to: data } }).map(el => el.get({ plain: true }));
+                io.emit('new-notification', { count: count, userRequests: userRequests, id: data });
+            } catch (err) {
+                console.log(err)
+            }
+        }())
+    }
+
     function fetchContacts(socket, data) {
         (async function () {
             try {
@@ -143,13 +155,6 @@ function homeController() {
     function getAllUsers(req, res) {
         (async function () {
             try {
-                const allusers = await Users.findAll({
-                    where: {
-                        id: {
-                            [Op.ne]: req.session.user_id
-                        }
-                    }
-                }).map(el => el.get({ plain: true }))
                 const details = await Users.findOne({ where: { id: req.session.user_id } });
                 const notifications = await Notifications.count({ where: { to: req.session.user_id } });
                 const userRequests = await Notifications.findAll({ where: { to: req.session.user_id } }).map(el => el.get({ plain: true }));
@@ -162,7 +167,6 @@ function homeController() {
                 const { dataValues } = details
                 res.render('Home/home',
                     {
-                        contacts: allusers,
                         user: dataValues,
                         notifications: notifications,
                         requests: userRequests,
@@ -180,7 +184,8 @@ function homeController() {
         acceptRequest,
         insertMessages,
         getMessages,
-        fetchContacts
+        fetchContacts,
+        getNotifications
     }
 }
 

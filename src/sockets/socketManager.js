@@ -4,7 +4,7 @@ const debug = require('debug')('app:socketManager')
 
 
 module.exports = (socket) => {
-    const { friendRequest, acceptRequest, insertMessages, getMessages, fetchContacts } = homeController();
+    const { friendRequest, acceptRequest, insertMessages, getMessages, fetchContacts, getNotifications } = homeController();
     debug("User Connected", socket.id)
 
     //disconnect
@@ -33,5 +33,10 @@ module.exports = (socket) => {
     socket.on('fetch_contacts', function (data) {
         console.log('fetch contacts db!')
         fetchContacts(socket, data);
+    });
+
+    socket.on('emit-notification', function (data) {
+        console.log(data);
+        getNotifications(io, data)
     });
 }

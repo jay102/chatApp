@@ -10,10 +10,10 @@
       </div>
       <div class="modal-body">
         <div class="wrapper">
-		<ul class="list-group">
+		<ul id="request_list" class="list-group">
         <% for (let i=0; i < requests.length; i++) { %>
   <li class="list-group-item" aria-disabled="true"><%=requests[i].from%>
-  <button id="accept" style="float:right" class="btn btn-primary btn-sm">Accept</button>
+  <button  style="float:right" class="accept btn btn-primary btn-sm">Accept</button>
   <p class="sender_id" style="display:none"><%=requests[i].user_id%></p>
   </li>
   

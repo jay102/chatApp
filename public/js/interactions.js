@@ -3,25 +3,11 @@ const user_id = element('user_id')
 const firstname = element('firstname');
 const lastname = element('lastname');
 $(document).ready(function () {
-    $(".add_friends").click(function (e) {
-        e.preventDefault()
-        const receiver_id = $(this).closest('.list-group-item').find(".id").text();
-        const name = $(this).closest('.list-group-item').find('.name').text();
-        const qst = confirm(`send request to ${name}?`);
-        if (qst) {
-            //make request
-            socket.emit('onRequest', { name: firstname + " " + lastname, id: receiver_id, user_id: user_id, is_friend: 0 });
-
-        } else {
-            return null;
-        }
-    });
     $("#add_contact").click(function (e) {
-        console.log('add contact clicked!')
         socket.emit('fetch_contacts', { user_id: user_id });
     });
-
-    $("#accept").click(function (e) {
+    //handle notifications on reload
+    $(".accept").click(function (e) {
         e.preventDefault()
         const sender_id = $(this).closest('.list-group-item').find(".sender_id").text();
         const accept = confirm(`Accept request?`);
@@ -32,6 +18,9 @@ $(document).ready(function () {
             return null;
         }
     });
+
+
+    //handle clicks to friends
     $(".friends").click(function (e) {
         e.preventDefault()
         document.getElementById('no-chats').style.display = "none";

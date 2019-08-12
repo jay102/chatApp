@@ -3,17 +3,19 @@
 const socket = io('http://localhost:5000');
 
 socket.on('request', function (data) {
-    // console.log(data)
+    console.log(data.data)
     alert(data.message);
-    location.reload();
+    //emit to recepient
+    socket.emit('emit-notification', data.data.to);
+    // location.reload();
 })
-
+//listen for friend request accepted
 socket.on('accept_response', function (data) {
     //console.log(data)
     alert(data.message);
     location.reload();
 })
-
+//listen for sent messages from server and append to chats
 socket.on('chat', function (data) {
     const li = document.createElement('li');
     const message = document.createElement('p');
@@ -34,10 +36,8 @@ socket.on('chat', function (data) {
     message.textContent = data.result['title'];
     li.innerHTML += image.outerHTML + message.outerHTML;
     document.getElementById('messages-list').appendChild(li);
-
-
-
 });
+//listen for user messages when a friends image is clicked
 socket.on('messages_received', function (data) {
     const ul = document.getElementById('messages-list');
     for (let i = 0; i < data.messages.length; i++) {
@@ -66,7 +66,7 @@ socket.on('messages_received', function (data) {
         }
 
     }
-
+    //handle send message button clciks
     $("#send_message").click(function (e) {
         e.preventDefault()
         const message = document.getElementById('message');
@@ -77,8 +77,10 @@ socket.on('messages_received', function (data) {
     });
 });
 
+
+//listen for all registered users and append to modal and also listen for clicks 
 socket.on('contacts', (data) => {
-    console.log(data);
+    // console.log(data);
     const ul = document.getElementById('contact_list');
     ul.innerHTML = "";
     data.allusers.forEach(user => {
@@ -118,7 +120,59 @@ socket.on('contacts', (data) => {
         if (qst) {
             //make request
             socket.emit('onRequest', { name: firstname + " " + lastname, id: receiver_id, user_id: user_id, is_friend: 0 });
-
+        } else {
+            return null;
+        }
+    });
+});
+//append new notification to recipient
+socket.on('new-notification', function (data) {
+    const div = document.getElementById('notification_div');
+    const button = document.createElement('button');
+    const a = document.createElement('a');
+    a.setAttribute('class', 'badge badge-danger');
+    a.setAttribute('data-toggle', 'modal');
+    a.setAttribute('data-target', '#acceptFriends');
+    a.setAttribute('id', 'not')
+    a.style.margin = 20;
+    a.style.cssFloat = "right";
+    a.href = "";
+    if (document.getElementById('not')) {
+        console.log(document.getElementById('not'))
+        document.getElementById('not').textContent = data.count;
+    } else {
+        if (data.count !== 0) {
+            a.textContent = data.count
+        }
+        if (data.id.toString() !== user_id) {
+        } else {
+            div.appendChild(a);
+        }
+    }
+    const ul = document.getElementById('request_list');
+    ul.innerHTML = "";
+    data.userRequests.forEach(req => {
+        const li = document.createElement('li');
+        const p = document.createElement('p');
+        li.setAttribute('class', 'list-group-item');
+        li.setAttribute('aria-disabled', true);
+        button.setAttribute('class', ' accept btn btn-primary btn-sm');
+        button.style.cssFloat = "right";
+        p.setAttribute('class', 'sender_id');
+        p.style.display = "none";
+        li.textContent = req.from
+        button.textContent = "Accept";
+        p.textContent = req.user_id
+        li.innerHTML += button.outerHTML + p.outerHTML;
+        ul.appendChild(li);
+    })
+    $(".accept").click(function (e) {
+        e.preventDefault()
+        const sender_id = $(this).closest('.list-group-item').find(".sender_id").text();
+        const accept = confirm(`Accept request?`);
+        if (accept) {
+            //make request
+            socket.emit('accept', { is_friend: 1, user_id: sender_id });
         } else {
             return null;
         }
