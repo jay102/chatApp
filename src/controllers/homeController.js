@@ -165,7 +165,7 @@ function homeController() {
                 }).map(el => el.get({ plain: true }));
                 debug(FriendList)
                 const { dataValues } = details
-                res.render('Home/home',
+                res.render('home/home',
                     {
                         user: dataValues,
                         notifications: notifications,
