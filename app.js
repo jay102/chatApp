@@ -66,7 +66,8 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist
 app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist')));
 
 //template engine
-app.set('views', path.join(__dirname, './src', 'views'));
+app.set('views', __dirname + '/src/views');
+//app.set('views', path.join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
 
 app.use('/auth', Auth);
@@ -79,7 +80,7 @@ app.get('/', (req, res) => {
 app.get('/logout', function (req, res) {
     req.logOut();
     req.session.destroy(function (err) {
-        res.redirect('/auth/login'); //Inside a callback… bulletproof!
+        res.redirect('/auth/login');
     });
 });
 
