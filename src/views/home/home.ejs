@@ -13,11 +13,11 @@
 	<div id="sidepanel">
 		<div id="profile">
 			<div id="notification_div" class="wrap">
-			<img id="profile-img" src="<%=`profile_imgs/${user.image_url}`%>" class="online" alt="" height="180px" width="180px" />
+			<img id="profile-img" src="<%=`profile_imgs/${user.image_url}`%>" class="online" alt=""/>
 				<% if(notifications) { %>
 					<a id="not" href="" data-toggle="modal" data-target="#acceptFriends" style="float:right;margin: 20px;" class="badge badge-danger"><%=notifications%></a>
 				<% } %>
-				<p id="firstname"><%=user.first_name%></p> <p style="display:none" id="lastname"><%=user.last_name%></p>
+				<p id="firstname"><%=user.username%></p> <p style="display:none" id="lastname"><%=user.last_name%></p>
 				<p id="user_id" style="display:none"><%=user.id%></p>
 				<p id="user_img" style="display:none"><%=user.image_url%></p>
 				<div id="status-options">

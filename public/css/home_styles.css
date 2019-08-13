@@ -691,3 +691,8 @@ body {
   .list-group-item{
     margin: 3px;
   }
+  #profile-img {
+    object-fit: cover;
+    width: 180px;
+    height: 180px;
+  }
