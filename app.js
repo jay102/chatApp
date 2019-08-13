@@ -67,7 +67,7 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist'))
 
 //template engine
 
-app.set('views', './src/views');
+app.set('views', 'src/views');
 //app.set('views', path.join(__dirname, './src/views'));
 app.set('view engine', 'ejs');
 

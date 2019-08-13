@@ -19,8 +19,8 @@ passportSerialize();
 passportStrategy();
 
 //routes for login, register and image upload
-authRouter.get('/login', (req, res) => res.render('auth/login', { error: req.flash('error') }));
-authRouter.get('/register', (req, res) => res.render('auth/signup'));
+authRouter.get('/login', (req, res) => res.render('/auth/login', { error: req.flash('error') }));
+authRouter.get('/register', (req, res) => res.render('/auth/signup'));
 
 //post routes
 authRouter.post('/login', passport.authenticate("local", {
