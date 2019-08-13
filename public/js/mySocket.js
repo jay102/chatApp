@@ -1,6 +1,6 @@
 
 
-const socket = io('http://localhost:5000');
+const socket = io('https://chat-app77.herokuapp.com');
 
 socket.on('request', function (data) {
     console.log(data.data)
