@@ -13,7 +13,7 @@
 	<div id="sidepanel">
 		<div id="profile">
 			<div id="notification_div" class="wrap">
-				<img id="profile-img" src="<%=`profile_imgs/${user.image_url}`%>" class="online" alt="" />
+			<img id="profile-img" src="<%=`profile_imgs/${user.image_url}`%>" class="online" alt="" height="180px" width="180px" />
 				<% if(notifications) { %>
 					<a id="not" href="" data-toggle="modal" data-target="#acceptFriends" style="float:right;margin: 20px;" class="badge badge-danger"><%=notifications%></a>
 				<% } %>
@@ -31,7 +31,7 @@
 			</div>
 		</div>
 		<div id="contacts">
-			<ul>
+			<ul id="friend_list">
 			<% for (let i =0; i< friends.length; i++) {%>
 				<li class="friends contact" >
 					<div class="wrap">
@@ -54,7 +54,7 @@
 	</div>
 	<div class="content">
 		<div class="contact-profile">
-			<img style="display:none" id="current_img" src="" alt="" />
+			<img style="display:none" id="current_img" src="" alt="" height="40px" width="40px" />
 			<p id="current_name"></p>
 			<a href="/logout" id ="logout"><i style="float: right;margin: 20px;" class="fa fa-sign-out" aria-hidden="true"></i></a>
 			

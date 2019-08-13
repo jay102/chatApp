@@ -4,7 +4,7 @@ const debug = require('debug')('app:socketManager')
 
 
 module.exports = (socket) => {
-    const { friendRequest, acceptRequest, insertMessages, getMessages, fetchContacts, getNotifications } = homeController();
+    const { friendRequest, acceptRequest, insertMessages, getMessages, fetchContacts, getNotifications, fetchFriends } = homeController();
     debug("User Connected", socket.id)
 
     //disconnect
@@ -23,7 +23,7 @@ module.exports = (socket) => {
 
     socket.on('chat', function (data) {
         debug(data)
-        insertMessages(data, io);
+        insertMessages(data, socket);
     });
     socket.on('get_messages', function (data) {
         debug(data)
@@ -38,5 +38,10 @@ module.exports = (socket) => {
     socket.on('emit-notification', function (data) {
         console.log(data);
         getNotifications(io, data)
+    });
+
+    socket.on('has_accepted', function (data) {
+        console.log(data, "id");
+        fetchFriends(io, data)
     });
 }

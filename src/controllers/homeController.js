@@ -39,6 +39,20 @@ function homeController() {
         }())
     }
 
+    function fetchFriends(io, data) {
+        (async function () {
+            try {
+                const FriendList = await Friends.findAll({
+                    include: [{ model: Users, attributes: ['first_name', 'last_name', 'image_url', 'id'] }],
+                    where: { is_friend: 1, user_id: data }
+                }).map(el => el.get({ plain: true }));
+
+                io.emit('friends', { data: FriendList });
+            } catch (err) {
+                console.log(err);
+            }
+        }())
+    }
     function getMessages(data, socket) {
         (async function messages() {
             try {
@@ -51,7 +65,7 @@ function homeController() {
         }());
     }
 
-    function insertMessages(data, io) {
+    function insertMessages(data, socket) {
         (async function insert() {
             const sender_id = data.sender_id;
             const receiver_id = data.receiver_id;
@@ -65,7 +79,7 @@ function homeController() {
                     const result = await Messages.create({ title, date, sender_id, receiver_id });
                     const { dataValues } = result
                     debug(dataValues, "result")
-                    io.emit('chat', { result, myImage: data.myImage })
+                    socket.emit('chat', { result, myImage: data.myImage })
                 } catch (err) {
                     debug(err)
                 }
@@ -98,7 +112,7 @@ function homeController() {
         const result = await Notifications.destroy({ where: { user_id: data.user_id } });
         debug(result, "delete notifications")
         if (result === 1) {
-            socket.emit('accept_response', { message: "Friend Accepted" });
+            socket.emit('accept_response', { message: "Friend Accepted", id: data.user_id });
         } else {
             socket.emit('accept_response', { message: "Could not delete notification after acceptance" });
         }
@@ -185,7 +199,8 @@ function homeController() {
         insertMessages,
         getMessages,
         fetchContacts,
-        getNotifications
+        getNotifications,
+        fetchFriends
     }
 }
 

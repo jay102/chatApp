@@ -1,18 +1,19 @@
 
 
-const socket = io('https://chat-app77.herokuapp.com');
+const socket = io('chat-app77.herokuapp.com');
 
 socket.on('request', function (data) {
     console.log(data.data)
     alert(data.message);
     //emit to recepient
     socket.emit('emit-notification', data.data.to);
-    // location.reload();
 })
 //listen for friend request accepted
 socket.on('accept_response', function (data) {
-    //console.log(data)
+    // console.log(data)
     alert(data.message);
+    //emit to recepient
+    socket.emit('has_accepted', data.id)
     location.reload();
 })
 //listen for sent messages from server and append to chats
@@ -176,5 +177,35 @@ socket.on('new-notification', function (data) {
         } else {
             return null;
         }
+    });
+});
+
+socket.on('friends', function (data) {
+    //append friend to list
+    console.log(data, "accepted friend")
+    const ul = document.getElementById('friend_list');
+    data.data.forEach(user => {
+        const li = document.createElement('li');
+        li.setAttribute('class', 'friends contact')
+        const wrap = document.createElement('div')
+        div.setAttribute('class', 'wrap');
+        const img = document.createElement('img');
+        img.src = user.user.image_url;
+        img.height = "40px";
+        img.width = "40px";
+        const meta = document.createElement('div');
+        const p_id = document.createElement('p');
+        const p_img = document.createElement('p');
+        const p_name = document.createElement('p');
+        p_id.style.display = "none";
+        p_img.style.display = "none";
+        p_id.textContent = user.user_id;
+        p_img.textContent = user.user.image_url;
+        p_name.setAttribute('class', 'name');
+        p_name.textContent = `${user.user.first_name} ${user.user.last_name}`;
+        meta.innerHTML += p_id.outerHTML + p_img.outerHTML + p_name.outerHTML;
+        wrap.innerHTML += img.outerHTML + meta.outerHTML;
+        li.appendChild(wrap);
+        ul.appendChild(li);
     });
 });
