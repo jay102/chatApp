@@ -50,7 +50,7 @@ function authController() {
                     }
                 }).catch(err => error(err));
         } else {
-            error('please select an image', 'auth/signup')
+            error('please select an image', 'Auth/signup')
         }
     }
 
