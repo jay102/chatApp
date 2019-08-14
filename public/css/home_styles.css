@@ -696,3 +696,6 @@ body {
     width: 180px;
     height: 180px;
   }
+  #firstname{
+    margin-top: -10px;
+  }

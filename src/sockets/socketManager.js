@@ -23,7 +23,7 @@ module.exports = (socket) => {
 
     socket.on('chat', function (data) {
         debug(data)
-        insertMessages(data, socket);
+        insertMessages(data, io);
     });
     socket.on('get_messages', function (data) {
         debug(data)

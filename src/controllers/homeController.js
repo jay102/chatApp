@@ -65,7 +65,7 @@ function homeController() {
         }());
     }
 
-    function insertMessages(data, socket) {
+    function insertMessages(data, io) {
         (async function insert() {
             const sender_id = data.sender_id;
             const receiver_id = data.receiver_id;
@@ -79,7 +79,7 @@ function homeController() {
                     const result = await Messages.create({ title, date, sender_id, receiver_id });
                     const { dataValues } = result
                     debug(dataValues, "result")
-                    socket.emit('chat', { result, myImage: data.myImage })
+                    io.emit('chat', { result, myImage: data.myImage, id: receiver_id })
                 } catch (err) {
                     debug(err)
                 }
