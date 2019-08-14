@@ -84,6 +84,26 @@ app.get('/logout', function (req, res) {
     });
 });
 
+// app.get('/friends', function (req, res) {
+//     // Users.findAll()
+//     //     .then(result => {
+//     //         res.status(200).json({ result: result })
+//     //     }).catch(err => {
+//     //         console.log(err)
+//     //     });
+//     const id = 38;
+//     const query = `SELECT id, FROM public.users u 
+//     LEFT   JOIN friendlist fl ON fl.user_id = u.id
+//     AND fl.friend_id = ${id}
+//     WHERE  u.username LIKE '%tom%'
+//     AND    fl.friend_id IS NULL`;
+//     db.query(query, { type: sequelize.QueryTypes.SELECT })
+//         .then(function (users) {
+//             // We don't need spread here, since only the results will be returned for select queries
+//             res.status(200).json({ result: users })
+//         })
+// });
+
 // setup error handler
 app.use((req, res, next) => {
     const error = new Error("Not Found");

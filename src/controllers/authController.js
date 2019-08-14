@@ -16,13 +16,15 @@ function authController() {
         //initialize error handler
         const { success, error } = responseHandler(req, res);
         const first_name = req.body.first_name;
+        let image;
         const last_name = req.body.last_name;
         const email = req.body.email;
         const username = req.body.username;
         const password = req.body.password;
-        const image = req.file.filename;
-        console.log(req.file)
-
+        if (req.file) {
+            image = req.file.filename;
+            console.log(req.file)
+        }
         if (req.file) {
             //hash password using bcyrpt
 
@@ -48,7 +50,7 @@ function authController() {
                     }
                 }).catch(err => error(err));
         } else {
-            alert('please select an image')
+            error('please select an image', 'auth/signup')
         }
     }
 
