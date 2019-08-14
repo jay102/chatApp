@@ -68,7 +68,7 @@ socket.on('messages_received', function (data) {
             if (sender == user_id) {
                 image.src = "profile_imgs/" + element('user_img')
                 li.setAttribute('class', 'replies')
-                console.log('sender')
+                // console.log('sender')
                 message.textContent = data.messages[i].title;
                 li.innerHTML += image.outerHTML + message.outerHTML;
                 ul.appendChild(li);
@@ -76,7 +76,7 @@ socket.on('messages_received', function (data) {
                 if (data.id == sender) {
                     image.src = data.image;
                     li.setAttribute('class', 'sent')
-                    console.log('receiver')
+                    //  console.log('receiver')
                     message.textContent = data.messages[i].title;
                     li.innerHTML += image.outerHTML + message.outerHTML;
                     ul.appendChild(li);
@@ -90,12 +90,9 @@ socket.on('messages_received', function (data) {
     //handle send message button clciks
     $("#send_message").click(function (e) {
         e.preventDefault()
-        const message = document.getElementById('message');
-        const user_id = element('user_id')
-        //console.log('clicked send!')
-        socket.emit('chat', { title: message.value, receiver_id: returnClicked(), sender_id: user_id, myImage: data.myImage })
-        message.value = "";
+        sendMessage(data);
     });
+
 });
 
 

@@ -17,7 +17,7 @@ logout.addEventListener('click', (e) => {
 
     const mLogout = confirm(`Confirm Logout?`);
     if (mLogout) {
-        fetch('http://localhost:5000/logout')
+        fetch('https://chat-app77.herokuapp.com/logout')
             .catch(err => console.log(err))
     } else {
         // return null;
@@ -84,3 +84,25 @@ function acceptFriend() {
         }
     });
 }
+
+function sendMessage(data) {
+    const message = document.getElementById('message');
+    const user_id = element('user_id')
+    // console.log('clicked send!')
+    socket.emit('chat', { title: message.value, receiver_id: returnClicked(), sender_id: user_id, myImage: data.myImage })
+    message.value = "";
+}
+
+const input = document.getElementById('message');
+input.addEventListener('keyup', function (e) {
+    e.preventDefault();
+    if (e.keyCode == 13) {
+        if (!returnClicked()) {
+            alert('select a friend to message')
+        } else {
+            //console.log('you selected someone')
+            sendMessage({ myImage: "profile_imgs/" + element('user_img') });
+        }
+
+    }
+});
