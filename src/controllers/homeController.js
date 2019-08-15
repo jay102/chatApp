@@ -17,7 +17,7 @@ function homeController() {
                 const userRequests = await Notifications.findAll({ where: { to: data } }).map(el => el.get({ plain: true }));
                 io.emit('new-notification', { count: count, userRequests: userRequests, id: data });
             } catch (err) {
-                console.log(err)
+                debug(err)
             }
         }())
     }
@@ -34,7 +34,7 @@ function homeController() {
                 }).map(el => el.get({ plain: true }))
                 socket.emit('contacts', { allusers });
             } catch (err) {
-                console.log(err)
+                debug(err)
             }
         }())
     }
@@ -49,7 +49,7 @@ function homeController() {
 
                 io.emit('friends', { data: FriendList });
             } catch (err) {
-                console.log(err);
+                debug(err);
             }
         }())
     }

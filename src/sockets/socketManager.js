@@ -31,17 +31,17 @@ module.exports = (socket) => {
     });
 
     socket.on('fetch_contacts', function (data) {
-        console.log('fetch contacts db!')
+        debug('fetch contacts db!')
         fetchContacts(socket, data);
     });
 
     socket.on('emit-notification', function (data) {
-        console.log(data);
+        debug(data);
         getNotifications(io, data)
     });
 
     socket.on('has_accepted', function (data) {
-        console.log(data, "id");
+        debug(data, "id");
         fetchFriends(io, data)
     });
 }

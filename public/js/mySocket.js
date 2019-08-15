@@ -4,7 +4,6 @@ const socket = io('https://chat-app77.herokuapp.com');
 let clickedId;
 
 socket.on('request', function (data) {
-    console.log(data.data)
     alert(data.message);
     //emit to recepient
     socket.emit('emit-notification', data.data.to);
@@ -18,7 +17,7 @@ socket.on('accept_response', function (data) {
 })
 //listen for sent messages from server and append to chats
 socket.on('chat', function (data) {
-    console.log(data, "chat")
+    // console.log(data, "chat")
     const li = newElement('li');
     const message = newElement('p');
     const image = newElement('img');
@@ -28,7 +27,7 @@ socket.on('chat', function (data) {
     if (id == incoming_id || id == receiver) {
         //condition
         if (incoming_id == user_id) {
-            console.log('sender')
+            // console.log('sender')
             image.src = "profile_imgs/" + element('user_img')
             li.setAttribute('class', 'replies')
             message.textContent = data.result['title'];
@@ -40,7 +39,7 @@ socket.on('chat', function (data) {
                 if (data.id == receiver) {
                     image.src = data.myImage;
                     li.setAttribute('class', 'sent')
-                    console.log('receiver')
+                    //    console.log('receiver')
                     message.textContent = data.result['title'];
                     li.innerHTML += image.outerHTML + message.outerHTML;
                     document.getElementById('messages-list').appendChild(li);
@@ -54,7 +53,6 @@ socket.on('chat', function (data) {
 });
 //listen for user messages when a friends image is clicked
 socket.on('messages_received', function (data) {
-    //console.log(data, "messages received");
     const ul = document.getElementById('messages-list');
     for (let i = 0; i < data.messages.length; i++) {
         const li = newElement('li');
@@ -186,7 +184,6 @@ socket.on('new-notification', function (data) {
 
 socket.on('friends', function (data) {
     //append friend to list
-    // console.log(data, "accepted friend")
     const ul = document.getElementById('friend_list');
     ul.innerHTML = "";
     data.data.forEach(user => {

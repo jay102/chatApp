@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== "development") {
     }
     );
 } else {
-    db = new Sequelize('fiverrchatapp', 'postgres', '123ifeco', {
+    db = new Sequelize('local_dbname', 'local_dbuser', 'local_dbpass', {
         host: 'localhost',
         dialect: 'postgres',
 

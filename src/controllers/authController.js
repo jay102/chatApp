@@ -23,11 +23,10 @@ function authController() {
         const password = req.body.password;
         if (req.file) {
             image = req.file.filename;
-            console.log(req.file)
+            debug(req.file)
         }
         if (req.file) {
             //hash password using bcyrpt
-
             let hash = bcrypt.hashSync(password, salt);
             Users.findOrCreate({
                 where: { email: email },

@@ -51,7 +51,7 @@ function friendsClick() {
         e.currentTarget.className = "friends contact active"
         name = $(this).closest('.contact').find(".friend_name").text();
         initId($(this).closest('.contact').find(".friend_id").text());
-        console.log(returnClicked(), "clicked friends id")
+        // console.log(returnClicked(), "clicked friends id")
         image = $(this).closest('.contact').find(".friend_img").text();
         setElement('current_name', name);
         document.getElementById('current_img').style.display = "block"
@@ -88,7 +88,6 @@ function acceptFriend() {
 function sendMessage(data) {
     const message = document.getElementById('message');
     const user_id = element('user_id')
-    // console.log('clicked send!')
     socket.emit('chat', { title: message.value, receiver_id: returnClicked(), sender_id: user_id, myImage: data.myImage })
     message.value = "";
 }
@@ -100,7 +99,6 @@ input.addEventListener('keyup', function (e) {
         if (!returnClicked()) {
             alert('select a friend to message')
         } else {
-            //console.log('you selected someone')
             sendMessage({ myImage: "profile_imgs/" + element('user_img') });
         }
 
