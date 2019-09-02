@@ -1,34 +1,34 @@
-const express = require("express");
-const debug = require("debug")("app");
-const chalk = require("chalk").green;
-const morgan = require("morgan");
-const passport = require("passport");
-const session = require("express-session");
-const flash = require("connect-flash");
-const path = require("path");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+const express = require('express');
+const debug = require('debug')('app');
+const chalk = require('chalk').green;
+const morgan = require('morgan');
+const passport = require('passport');
+const session = require('express-session');
+const flash = require('connect-flash');
+const path = require('path');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const app = express();
-const server = require("http").Server(app);
-const io = (module.exports.io = require("socket.io")(server));
-const db = require("./database/config");
-const socketManager = require("./src/sockets/socketManager");
+const server = require('http').Server(app);
+const io = (module.exports.io = require('socket.io')(server));
+const db = require('./database/config');
+const socketManager = require('./src/sockets/socketManager');
 
 // declare port
 const port = process.env.PORT || 5000;
 
 // test db
 db.authenticate()
-  .then(() => debug("Database Connected Successfully"))
-  .catch(err => debug(`Error :  ${err}`));
+  .then(() => debug('Database Connected Successfully'))
+  .catch((err) => debug(`Error :  ${err}`));
 
 // import routes
-const Auth = require("./src/routes/Auth/auth");
-const Home = require("./src/routes/Home/home")();
+const Auth = require('./src/routes/Auth/auth');
+const Home = require('./src/routes/Home/home')();
 
 // Middlewares
-app.use(morgan("tiny"));
+app.use(morgan('tiny'));
 
 // body parser
 app.use(bodyParser.json());
@@ -38,12 +38,12 @@ app.use(cookieParser());
 // Express Sessions
 app.use(
   session({
-    secret: "secret",
+    secret: 'secret',
     maxAge: new Date(Date.now() + 3600000), // 1 Hour
     expires: new Date(Date.now() + 3600000), // 1 Hour
     saveUninitialized: true,
-    resave: true
-  })
+    resave: true,
+  }),
 );
 
 // Passport middleware
@@ -55,62 +55,62 @@ app.use(flash());
 
 // Global Variables
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash("success_msg");
-  res.locals.error_msg = req.flash("error_msg");
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
   next();
 });
 
-app.use(express.static(path.join(__dirname, "/public/")));
-app.use(express.static(path.join(__dirname, "/uploads/")));
+app.use(express.static(path.join(__dirname, '/public/')));
+app.use(express.static(path.join(__dirname, '/uploads/')));
 app.use(
-  "/css",
-  express.static(path.join(__dirname, "/node_modules/bootstrap/dist/css"))
+  '/css',
+  express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')),
 );
 app.use(
-  "/js",
-  express.static(path.join(__dirname, "/node_modules/bootstrap/dist/js"))
+  '/js',
+  express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')),
 );
 app.use(
-  "/js",
-  express.static(path.join(__dirname, "/node_modules/jquery/dist"))
+  '/js',
+  express.static(path.join(__dirname, '/node_modules/jquery/dist')),
 );
 
 // template engine
 
-app.set("views", "./src/views");
-app.set("view engine", "ejs");
+app.set('views', './src/views');
+app.set('view engine', 'ejs');
 
-app.use("/auth", Auth);
-app.use("/home", Home);
+app.use('/auth', Auth);
+app.use('/home', Home);
 
-app.get("/", (req, res) => {
-  res.redirect("/auth/login");
+app.get('/', (req, res) => {
+  res.redirect('/auth/login');
 });
 
-app.get("/logout", (req, res) => {
+app.get('/logout', (req, res) => {
   req.logOut();
-  req.session.destroy(err => {
-    res.redirect("/auth/login");
+  req.session.destroy((err) => {
+    res.redirect('/auth/login');
     debug(err);
   });
 });
 
 // setup error handler
 app.use((req, res, next) => {
-  const error = new Error("Not Found");
+  const error = new Error('Not Found');
   error.status = 404;
   next(error);
 });
 
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
   res.status(error.status || 500);
   res.json({
     error: {
-      message: error.message
-    }
+      message: error.message,
+    },
   });
 });
-io.on("connection", socketManager);
+io.on('connection', socketManager);
 
 server.listen(port, () => {
   debug(`Server running on port ${chalk(`${port}`)}`);
